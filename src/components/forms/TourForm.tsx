@@ -84,6 +84,37 @@ export default function TourForm({ initialData = null, availableOffers = [] }: {
     { id: "pricing", label: "Pricing & Promo", icon: Tag },
   ];
 
+  const commonHighlights = [
+    "Visit Sigiriya Rock Fortress",
+    "Temple of the Tooth Relic",
+    "Yala National Park Safari",
+    "Galle Fort Walking Tour",
+    "Tea Plantation Visit",
+    "Train Ride to Ella",
+    "Whale Watching in Mirissa",
+    "Dambulla Cave Temple"
+  ];
+
+  const commonInclusions = [
+    "Air-conditioned vehicle",
+    "English speaking driver/guide",
+    "Daily Breakfast",
+    "All taxes and service charges",
+    "Hotel pickup and drop-off",
+    "Accommodation",
+    "Entrance fees"
+  ];
+
+  const commonExclusions = [
+    "International Flights",
+    "Visas",
+    "Lunch and Dinner",
+    "Personal expenses",
+    "Gratuities",
+    "Travel Insurance",
+    "Early check-in / late check-out"
+  ];
+
   return (
     <form onSubmit={handleSubmit} className="space-y-6 pb-20 max-w-5xl mx-auto">
       {/* Header Sticky Bar */}
@@ -183,6 +214,7 @@ export default function TourForm({ initialData = null, availableOffers = [] }: {
                   items={formData.highlights} 
                   onChange={(items) => setFormData((prev: any) => ({ ...prev, highlights: items }))} 
                   placeholder="e.g. Visit Sigiriya Rock Fortress"
+                  suggestions={commonHighlights}
                 />
               </div>
               
@@ -193,6 +225,7 @@ export default function TourForm({ initialData = null, availableOffers = [] }: {
                     items={formData.inclusions} 
                     onChange={(items) => setFormData((prev: any) => ({ ...prev, inclusions: items }))} 
                     placeholder="e.g. 4-star Accommodation"
+                    suggestions={commonInclusions}
                   />
                 </div>
                 <div className="bg-red-50/30 p-6 rounded-xl border border-red-100/50">
@@ -201,6 +234,7 @@ export default function TourForm({ initialData = null, availableOffers = [] }: {
                     items={formData.exclusions} 
                     onChange={(items) => setFormData((prev: any) => ({ ...prev, exclusions: items }))} 
                     placeholder="e.g. International Flights"
+                    suggestions={commonExclusions}
                   />
                 </div>
               </div>
