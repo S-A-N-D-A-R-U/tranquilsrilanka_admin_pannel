@@ -8,6 +8,7 @@ import ItineraryBuilder from "./ItineraryBuilder";
 import { saveTour } from "@/app/actions/tourActions";
 import { Save, ArrowLeft, Info, List, Map, Image as ImageIcon, Tag } from "lucide-react";
 import Link from "next/link";
+import TagInput from "./TagInput";
 
 export default function TourForm({ initialData = null, availableOffers = [] }: { initialData?: any, availableOffers?: any[] }) {
   const router = useRouter();
@@ -149,14 +150,20 @@ export default function TourForm({ initialData = null, availableOffers = [] }: {
                   <input type="text" name="duration" value={formData.duration} onChange={handleChange} required className="form-input" placeholder="e.g. 7 Days / 6 Nights" />
                 </div>
                 
-                <div className="form-group">
-                  <label className="form-label">Destinations (Comma separated)</label>
-                  <input type="text" value={formData.destinations.join(", ")} onChange={(e) => handleCommaList(e, "destinations")} className="form-input" placeholder="Sigiriya, Kandy, Galle" />
-                </div>
+                <TagInput
+                  label="Destinations"
+                  tags={formData.destinations}
+                  onChange={(tags) => setFormData((prev: any) => ({ ...prev, destinations: tags }))}
+                  placeholder="e.g. Sigiriya, Kandy"
+                />
 
-                <div className="form-group md:col-span-2">
-                  <label className="form-label">Categories (Comma separated)</label>
-                  <input type="text" value={formData.categories.join(", ")} onChange={(e) => handleCommaList(e, "categories")} className="form-input" placeholder="Wildlife, Heritage, Beach" />
+                <div className="md:col-span-2">
+                  <TagInput
+                    label="Categories"
+                    tags={formData.categories}
+                    onChange={(tags) => setFormData((prev: any) => ({ ...prev, categories: tags }))}
+                    placeholder="e.g. Wildlife, Heritage, Beach"
+                  />
                 </div>
               </div>
 
