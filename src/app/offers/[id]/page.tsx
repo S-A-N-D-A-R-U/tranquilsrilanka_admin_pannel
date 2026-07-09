@@ -1,0 +1,20 @@
+import OfferForm from "@/components/forms/OfferForm";
+import { getOffer } from "@/app/actions/offerActions";
+
+export default async function EditOfferPage({ params }: { params: { id: string } }) {
+  const offer = await getOffer(params.id);
+
+  if (!offer) {
+    return <div>Offer not found</div>;
+  }
+
+  return (
+    <div className="max-w-5xl mx-auto">
+      <div className="mb-8">
+        <h1 className="text-3xl font-bold mb-2">Edit Offer</h1>
+        <p className="text-[var(--text-secondary)]">Update details for this special offer.</p>
+      </div>
+      <OfferForm initialData={offer} />
+    </div>
+  );
+}
