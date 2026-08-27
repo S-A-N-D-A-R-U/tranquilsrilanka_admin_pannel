@@ -1,8 +1,9 @@
 import OfferForm from "@/components/forms/OfferForm";
 import { getOffer } from "@/app/actions/offerActions";
 
-export default async function EditOfferPage({ params }: { params: { id: string } }) {
-  const offer = await getOffer(params.id);
+export default async function EditOfferPage({ params }: { params: Promise<{ id: string }> }) {
+  const { id } = await params;
+  const offer = await getOffer(id);
 
   if (!offer) {
     return <div>Offer not found</div>;
