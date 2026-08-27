@@ -4,15 +4,25 @@ import connectToDatabase from "@/lib/mongodb";
 import HeroSlide from "@/models/HeroSlide";
 
 export async function getHeroSlides() {
-  await connectToDatabase();
-  const slides = await HeroSlide.find({}).sort({ order: 1, createdAt: -1 }).lean();
-  return JSON.parse(JSON.stringify(slides));
+  try {
+    await connectToDatabase();
+    const slides = await HeroSlide.find({}).sort({ order: 1, createdAt: -1 }).lean();
+    return JSON.parse(JSON.stringify(slides));
+  } catch (error) {
+    console.error("Error fetching hero slides:", error);
+    return [];
+  }
 }
 
 export async function getHeroSlide(id: string) {
-  await connectToDatabase();
-  const slide = await HeroSlide.findById(id).lean();
-  return JSON.parse(JSON.stringify(slide));
+  try {
+    await connectToDatabase();
+    const slide = await HeroSlide.findById(id).lean();
+    return slide ? JSON.parse(JSON.stringify(slide)) : null;
+  } catch (error) {
+    console.error("Error fetching hero slide:", error);
+    return null;
+  }
 }
 
 export async function deleteHeroSlide(id: string) {

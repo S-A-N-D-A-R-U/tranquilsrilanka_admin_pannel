@@ -15,9 +15,14 @@ export async function getTours() {
 }
 
 export async function getTour(id: string) {
-  await connectToDatabase();
-  const tour = await Tour.findById(id).lean();
-  return JSON.parse(JSON.stringify(tour));
+  try {
+    await connectToDatabase();
+    const tour = await Tour.findById(id).lean();
+    return tour ? JSON.parse(JSON.stringify(tour)) : null;
+  } catch (error) {
+    console.error("Error fetching tour:", error);
+    return null;
+  }
 }
 
 export async function deleteTour(id: string) {

@@ -1,6 +1,8 @@
 import PostForm from "@/components/forms/PostForm";
 import { getPost } from "@/app/actions/postActions";
 
+export const dynamic = 'force-dynamic';
+
 export default async function EditPostPage({ params }: { params: Promise<{ id: string }> }) {
   const { id } = await params;
   const post = await getPost(id);

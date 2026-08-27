@@ -2,6 +2,8 @@ import { notFound } from "next/navigation";
 import { getHeroSlide } from "@/app/actions/heroSlideActions";
 import HeroSlideForm from "@/components/forms/HeroSlideForm";
 
+export const dynamic = 'force-dynamic';
+
 export default async function EditHeroSlidePage(props: { params: Promise<{ id: string }> }) {
   const params = await props.params;
   const slide = await getHeroSlide(params.id);
