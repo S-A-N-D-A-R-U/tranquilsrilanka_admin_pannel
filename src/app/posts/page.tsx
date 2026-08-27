@@ -2,6 +2,8 @@ import Link from "next/link";
 import { Plus, Edit, Trash2 } from "lucide-react";
 import { getPosts } from "@/app/actions/postActions";
 
+export const dynamic = 'force-dynamic';
+
 export default async function PostsPage() {
   const posts = await getPosts();
 

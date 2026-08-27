@@ -3,6 +3,8 @@ import connectToDatabase from "@/lib/mongodb";
 import Tour from "@/models/Tour";
 import Activity from "@/models/Activity";
 
+export const dynamic = 'force-dynamic';
+
 async function getStats() {
   try {
     await connectToDatabase();

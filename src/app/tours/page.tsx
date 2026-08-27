@@ -2,6 +2,8 @@ import Link from "next/link";
 import { Plus, Edit, Trash2 } from "lucide-react";
 import { getTours } from "@/app/actions/tourActions";
 
+export const dynamic = 'force-dynamic';
+
 export default async function ToursPage() {
   const tours = await getTours();
 

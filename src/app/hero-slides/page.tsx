@@ -2,6 +2,8 @@ import Link from "next/link";
 import { Plus, Edit, Trash2 } from "lucide-react";
 import { getHeroSlides } from "@/app/actions/heroSlideActions";
 
+export const dynamic = 'force-dynamic';
+
 export default async function HeroSlidesPage() {
   const slides = await getHeroSlides();
 

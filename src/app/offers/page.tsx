@@ -2,6 +2,8 @@ import Link from "next/link";
 import { Plus, Edit, Trash2 } from "lucide-react";
 import { getOffers } from "@/app/actions/offerActions";
 
+export const dynamic = 'force-dynamic';
+
 export default async function OffersPage() {
   const offers = await getOffers();
 
