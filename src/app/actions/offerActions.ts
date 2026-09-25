@@ -1,11 +1,14 @@
 'use server';
+import { requireAdmin } from '@/lib/auth';
 
 import { revalidatePath } from 'next/cache';
+import { revalidateSite } from '@/lib/revalidateSite';
 import dbConnect from '@/lib/mongodb';
 import Offer from '@/models/Offer';
 import Tour from '@/models/Tour';
 
 export async function getOffers() {
+  await requireAdmin();
   await dbConnect();
   try {
     const offers = await Offer.find({}).sort({ createdAt: -1 });
@@ -17,6 +20,7 @@ export async function getOffers() {
 }
 
 export async function getOffer(id: string) {
+  await requireAdmin();
   await dbConnect();
   try {
     const offer = await Offer.findById(id);
@@ -28,10 +32,12 @@ export async function getOffer(id: string) {
 }
 
 export async function createOffer(data: any) {
+  await requireAdmin();
   await dbConnect();
   try {
     const offer = await Offer.create(data);
     revalidatePath('/offers');
+    await revalidateSite(['offers']);
     return { success: true, offer: JSON.parse(JSON.stringify(offer)) };
   } catch (error: any) {
     console.error('Error creating offer:', error);
@@ -40,10 +46,12 @@ export async function createOffer(data: any) {
 }
 
 export async function updateOffer(id: string, data: any) {
+  await requireAdmin();
   await dbConnect();
   try {
     const offer = await Offer.findByIdAndUpdate(id, data, { new: true });
     revalidatePath('/offers');
+    await revalidateSite(['offers']);
     return { success: true, offer: JSON.parse(JSON.stringify(offer)) };
   } catch (error: any) {
     console.error('Error updating offer:', error);
@@ -52,6 +60,7 @@ export async function updateOffer(id: string, data: any) {
 }
 
 export async function deleteOffer(id: string) {
+  await requireAdmin();
   await dbConnect();
   try {
     await Offer.findByIdAndDelete(id);
@@ -61,6 +70,7 @@ export async function deleteOffer(id: string) {
       { $pull: { linkedOffers: id } }
     );
     revalidatePath('/offers');
+    await revalidateSite(['offers']);
     return { success: true };
   } catch (error: any) {
     console.error('Error deleting offer:', error);
