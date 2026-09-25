@@ -1,4 +1,5 @@
 "use server";
+import { requireAdmin } from "@/lib/auth";
 import { v2 as cloudinary } from "cloudinary";
 
 cloudinary.config({
@@ -8,6 +9,7 @@ cloudinary.config({
 });
 
 export async function uploadImage(formData: FormData): Promise<{ url: string } | { error: string }> {
+  await requireAdmin();
   try {
     const file = formData.get("file") as File;
     if (!file) return { error: "No file provided" };

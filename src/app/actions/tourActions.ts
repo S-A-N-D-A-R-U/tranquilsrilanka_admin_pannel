@@ -1,10 +1,12 @@
 "use server";
+import { requireAdmin } from "@/lib/auth";
 import { revalidatePath } from "next/cache";
 import { revalidateSite } from "@/lib/revalidateSite";
 import connectToDatabase from "@/lib/mongodb";
 import Tour from "@/models/Tour";
 
 export async function getTours() {
+  await requireAdmin();
   try {
     await connectToDatabase();
     const tours = await Tour.find({}).sort({ createdAt: -1 }).lean();
@@ -16,6 +18,7 @@ export async function getTours() {
 }
 
 export async function getTour(id: string) {
+  await requireAdmin();
   try {
     await connectToDatabase();
     const tour = await Tour.findById(id).lean();
@@ -27,6 +30,7 @@ export async function getTour(id: string) {
 }
 
 export async function deleteTour(id: string) {
+  await requireAdmin();
   await connectToDatabase();
   await Tour.findByIdAndDelete(id);
   revalidatePath("/tours");
@@ -34,6 +38,7 @@ export async function deleteTour(id: string) {
 }
 
 export async function saveTour(data: any, id?: string) {
+  await requireAdmin();
   await connectToDatabase();
   if (id) {
     await Tour.findByIdAndUpdate(id, data);

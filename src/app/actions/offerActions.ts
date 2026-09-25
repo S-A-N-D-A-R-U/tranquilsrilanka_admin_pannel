@@ -1,4 +1,5 @@
 'use server';
+import { requireAdmin } from '@/lib/auth';
 
 import { revalidatePath } from 'next/cache';
 import { revalidateSite } from '@/lib/revalidateSite';
@@ -7,6 +8,7 @@ import Offer from '@/models/Offer';
 import Tour from '@/models/Tour';
 
 export async function getOffers() {
+  await requireAdmin();
   await dbConnect();
   try {
     const offers = await Offer.find({}).sort({ createdAt: -1 });
@@ -18,6 +20,7 @@ export async function getOffers() {
 }
 
 export async function getOffer(id: string) {
+  await requireAdmin();
   await dbConnect();
   try {
     const offer = await Offer.findById(id);
@@ -29,6 +32,7 @@ export async function getOffer(id: string) {
 }
 
 export async function createOffer(data: any) {
+  await requireAdmin();
   await dbConnect();
   try {
     const offer = await Offer.create(data);
@@ -42,6 +46,7 @@ export async function createOffer(data: any) {
 }
 
 export async function updateOffer(id: string, data: any) {
+  await requireAdmin();
   await dbConnect();
   try {
     const offer = await Offer.findByIdAndUpdate(id, data, { new: true });
@@ -55,6 +60,7 @@ export async function updateOffer(id: string, data: any) {
 }
 
 export async function deleteOffer(id: string) {
+  await requireAdmin();
   await dbConnect();
   try {
     await Offer.findByIdAndDelete(id);
