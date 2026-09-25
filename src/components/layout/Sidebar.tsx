@@ -1,6 +1,7 @@
 "use client";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+import { logout } from "@/app/actions/authActions";
 import { LayoutDashboard, Map, Compass, Settings, LogOut, MountainSnow, Tag, BookOpen, MessageSquare } from "lucide-react";
 
 export default function Sidebar() {
@@ -76,9 +77,11 @@ export default function Sidebar() {
             <p className="text-[13px] font-semibold text-white leading-tight truncate">Admin User</p>
             <p className="text-[11px] text-white/50 truncate">admin@serene.lk</p>
           </div>
-          <button className="text-white/40 hover:text-[var(--danger)] transition-colors p-1.5 rounded-lg hover:bg-white/5" title="Sign out">
-            <LogOut size={16} />
-          </button>
+          <form action={logout}>
+            <button type="submit" className="text-white/40 hover:text-[var(--danger)] transition-colors p-1.5 rounded-lg hover:bg-white/5" title="Sign out" aria-label="Sign out">
+              <LogOut size={16} />
+            </button>
+          </form>
         </div>
       </div>
     </aside>

@@ -1,10 +1,13 @@
 'use server';
+import { requireAdmin } from '@/lib/auth';
 
 import { revalidatePath } from 'next/cache';
+import { revalidateSite } from '@/lib/revalidateSite';
 import dbConnect from '@/lib/mongodb';
 import Post from '@/models/Post';
 
 export async function getPosts() {
+  await requireAdmin();
   await dbConnect();
   try {
     const posts = await Post.find({}).sort({ createdAt: -1 });
@@ -16,6 +19,7 @@ export async function getPosts() {
 }
 
 export async function getPost(id: string) {
+  await requireAdmin();
   await dbConnect();
   try {
     const post = await Post.findById(id);
@@ -27,6 +31,7 @@ export async function getPost(id: string) {
 }
 
 export async function createPost(data: any) {
+  await requireAdmin();
   await dbConnect();
   try {
     // Generate slug from title if not provided
@@ -35,6 +40,7 @@ export async function createPost(data: any) {
     }
     const post = await Post.create(data);
     revalidatePath('/posts');
+    await revalidateSite(['posts']);
     return { success: true, post: JSON.parse(JSON.stringify(post)) };
   } catch (error: any) {
     console.error('Error creating post:', error);
@@ -43,10 +49,12 @@ export async function createPost(data: any) {
 }
 
 export async function updatePost(id: string, data: any) {
+  await requireAdmin();
   await dbConnect();
   try {
     const post = await Post.findByIdAndUpdate(id, data, { new: true });
     revalidatePath('/posts');
+    await revalidateSite(['posts']);
     return { success: true, post: JSON.parse(JSON.stringify(post)) };
   } catch (error: any) {
     console.error('Error updating post:', error);
@@ -55,10 +63,12 @@ export async function updatePost(id: string, data: any) {
 }
 
 export async function deletePost(id: string) {
+  await requireAdmin();
   await dbConnect();
   try {
     await Post.findByIdAndDelete(id);
     revalidatePath('/posts');
+    await revalidateSite(['posts']);
     return { success: true };
   } catch (error: any) {
     console.error('Error deleting post:', error);
