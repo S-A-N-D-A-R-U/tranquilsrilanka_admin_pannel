@@ -1,6 +1,7 @@
 'use server';
 
 import { revalidatePath } from 'next/cache';
+import { revalidateSite } from '@/lib/revalidateSite';
 import dbConnect from '@/lib/mongodb';
 import Offer from '@/models/Offer';
 import Tour from '@/models/Tour';
@@ -32,6 +33,7 @@ export async function createOffer(data: any) {
   try {
     const offer = await Offer.create(data);
     revalidatePath('/offers');
+    await revalidateSite(['offers']);
     return { success: true, offer: JSON.parse(JSON.stringify(offer)) };
   } catch (error: any) {
     console.error('Error creating offer:', error);
@@ -44,6 +46,7 @@ export async function updateOffer(id: string, data: any) {
   try {
     const offer = await Offer.findByIdAndUpdate(id, data, { new: true });
     revalidatePath('/offers');
+    await revalidateSite(['offers']);
     return { success: true, offer: JSON.parse(JSON.stringify(offer)) };
   } catch (error: any) {
     console.error('Error updating offer:', error);
@@ -61,6 +64,7 @@ export async function deleteOffer(id: string) {
       { $pull: { linkedOffers: id } }
     );
     revalidatePath('/offers');
+    await revalidateSite(['offers']);
     return { success: true };
   } catch (error: any) {
     console.error('Error deleting offer:', error);

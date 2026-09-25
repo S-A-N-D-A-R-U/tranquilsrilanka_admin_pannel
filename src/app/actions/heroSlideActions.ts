@@ -1,5 +1,6 @@
 "use server";
 import { revalidatePath } from "next/cache";
+import { revalidateSite } from "@/lib/revalidateSite";
 import connectToDatabase from "@/lib/mongodb";
 import HeroSlide from "@/models/HeroSlide";
 
@@ -29,6 +30,7 @@ export async function deleteHeroSlide(id: string) {
   await connectToDatabase();
   await HeroSlide.findByIdAndDelete(id);
   revalidatePath("/hero-slides");
+  await revalidateSite(["hero-slides"]);
 }
 
 export async function saveHeroSlide(data: any, id?: string) {
@@ -40,4 +42,5 @@ export async function saveHeroSlide(data: any, id?: string) {
     await newSlide.save();
   }
   revalidatePath("/hero-slides");
+  await revalidateSite(["hero-slides"]);
 }

@@ -1,5 +1,6 @@
 "use server";
 import { revalidatePath } from "next/cache";
+import { revalidateSite } from "@/lib/revalidateSite";
 import connectToDatabase from "@/lib/mongodb";
 import Tour from "@/models/Tour";
 
@@ -29,6 +30,7 @@ export async function deleteTour(id: string) {
   await connectToDatabase();
   await Tour.findByIdAndDelete(id);
   revalidatePath("/tours");
+  await revalidateSite(["tours"]);
 }
 
 export async function saveTour(data: any, id?: string) {
@@ -44,4 +46,5 @@ export async function saveTour(data: any, id?: string) {
     await newTour.save();
   }
   revalidatePath("/tours");
+  await revalidateSite(["tours"]);
 }

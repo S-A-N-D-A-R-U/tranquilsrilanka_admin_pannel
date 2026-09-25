@@ -1,5 +1,6 @@
 "use server";
 import { revalidatePath } from "next/cache";
+import { revalidateSite } from "@/lib/revalidateSite";
 import connectToDatabase from "@/lib/mongodb";
 import Activity from "@/models/Activity";
 
@@ -29,6 +30,7 @@ export async function deleteActivity(id: string) {
   await connectToDatabase();
   await Activity.findByIdAndDelete(id);
   revalidatePath("/activities");
+  await revalidateSite(["activities"]);
 }
 
 export async function saveActivity(data: any, id?: string) {
@@ -43,4 +45,5 @@ export async function saveActivity(data: any, id?: string) {
     await newActivity.save();
   }
   revalidatePath("/activities");
+  await revalidateSite(["activities"]);
 }
