@@ -1,10 +1,12 @@
 "use server";
+import { requireAdmin } from "@/lib/auth";
 import { revalidatePath } from "next/cache";
 import { revalidateSite } from "@/lib/revalidateSite";
 import connectToDatabase from "@/lib/mongodb";
 import Activity from "@/models/Activity";
 
 export async function getActivities() {
+  await requireAdmin();
   try {
     await connectToDatabase();
     const activities = await Activity.find({}).sort({ createdAt: -1 }).lean();
@@ -16,6 +18,7 @@ export async function getActivities() {
 }
 
 export async function getActivity(id: string) {
+  await requireAdmin();
   try {
     await connectToDatabase();
     const activity = await Activity.findById(id).lean();
@@ -27,6 +30,7 @@ export async function getActivity(id: string) {
 }
 
 export async function deleteActivity(id: string) {
+  await requireAdmin();
   await connectToDatabase();
   await Activity.findByIdAndDelete(id);
   revalidatePath("/activities");
@@ -34,6 +38,7 @@ export async function deleteActivity(id: string) {
 }
 
 export async function saveActivity(data: any, id?: string) {
+  await requireAdmin();
   await connectToDatabase();
   if (id) {
     await Activity.findByIdAndUpdate(id, data);
